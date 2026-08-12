@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Pairing uses MQTTS only. Pin leaf + intermediate (+ root backup) for broker.emqx.io. -->
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">broker.emqx.io</domain>
+        <pin-set expiration="2027-08-12">
+            <!-- SHA-256 SPKI pins observed 2026-08-12; keep intermediate so leaf rotation survives. -->
+            <pin digest="SHA-256">KTYj5LiWqYowwWQsMEgva7C/CJQj8tDQ0Dk9I6is1ZE=</pin>
+            <pin digest="SHA-256">E3tYcwo9CiqATmKtpMLW5V+pzIq+ZoDmpXSiJlXGmTo=</pin>
+            <pin digest="SHA-256">i7WTqTvh0OioIruIfFR4kMPnBqrS2rdiVPl/s2uC/CY=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>

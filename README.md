@@ -1,8 +1,8 @@
 # Easy Share
 
-Peer-to-peer file sharing between devices — **no account, no cloud relay, no port forwarding**.
+Device-to-device file sharing — **no account**. Pairing uses a short code over the internet; **file bytes stay peer-to-peer** (not relayed through a server). Early builds still use a public MQTT broker (`broker.emqx.io`) for **encrypted** pairing signaling only — payloads are AES-GCM sealed; the broker can still see topic timing/presence metadata. SPKI pins (leaf + intermediate) live in `MqttSsl` and `network_security_config.xml`; rotate them when the broker cert chain changes.
 
-Android v1 uses WebRTC DataChannels with double-QR Offer/Answer signaling and public STUN only. Adaptive connect retries (LAN → WAN → IPv6 → TCP ICE → …) raise success rate; some symmetric-NAT pairs can still fail without TURN.
+Android v1 targets WebRTC DataChannels with optional QR and public STUN. Adaptive connect retries (LAN → WAN → IPv6 → TCP ICE → …) raise success rate; some symmetric-NAT pairs can still fail without TURN.
 
 ## Status
 

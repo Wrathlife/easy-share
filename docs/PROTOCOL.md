@@ -16,7 +16,8 @@ Fields (binary → compressed → Base45/Base64 in QR):
 - `exp` — expiry epoch seconds
 - HMAC over fields using `auth`
 
-Handshake: host shows Offer QR → guest shows Answer QR → host scans answer.
+Handshake (single code): host shows share code → guest enters it → devices pair.
+No reply code. QR is an optional alternate for the same payload.
 
 ## DataChannel frames
 

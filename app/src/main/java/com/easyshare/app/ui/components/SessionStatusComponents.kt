@@ -84,7 +84,7 @@ fun ConnectStepper(
                 label = {
                     Text(
                         text = when (step) {
-                            ConnectStep.QrExchanged -> "QR"
+                            ConnectStep.CodeExchanged -> "Code"
                             ConnectStep.Gathering -> "Gather"
                             ConnectStep.Checking -> "Check"
                             ConnectStep.Connected -> "Link"

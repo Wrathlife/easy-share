@@ -1,7 +1,8 @@
 package com.easyshare.app.ui.state
 
 /**
- * Platform-neutral session phases. Wire protocol / QR must not embed Android URIs.
+ * Platform-neutral session phases. Wire protocol must not embed Android URIs.
+ * Pairing defaults to a generated share code; QR is an optional alternate.
  */
 sealed interface SessionUiState {
     val title: String
@@ -9,7 +10,8 @@ sealed interface SessionUiState {
 
     data object Idle : SessionUiState {
         override val title = "Easy Share"
-        override val subtitle = "Share files peer-to-peer — no account, no cloud relay."
+        override val subtitle =
+            "Share files device-to-device. Pairing uses a short code; file bytes stay peer-to-peer (not relayed)."
     }
 
     data object PreparingShare : SessionUiState {
@@ -17,26 +19,22 @@ sealed interface SessionUiState {
         override val subtitle = "Building file list and connection details…"
     }
 
-    data class ShowOfferQr(
-        val strategyLabel: String = "WAN P2P"
+    data object ChooseFilesToShare : SessionUiState {
+        override val title = "Choose files to share"
+        override val subtitle = "Only you pick what to send. The other device just receives."
+    }
+
+    data class ShowOfferCode(
+        val code: String,
+        val strategyLabel: String = "Internet pairing"
     ) : SessionUiState {
-        override val title = "Show this QR"
-        override val subtitle = "Step 1 of 2 — other device scans this code."
+        override val title = "Your share code"
+        override val subtitle = "Send this code to the other device. They enter it to pair."
     }
 
-    data object ScanOfferQr : SessionUiState {
-        override val title = "Scan their QR"
-        override val subtitle = "Step 1 of 2 — point at the sharer’s code."
-    }
-
-    data object ShowAnswerQr : SessionUiState {
-        override val title = "Show your reply QR"
-        override val subtitle = "Step 2 of 2 — sharer scans this to finish pairing."
-    }
-
-    data object ScanAnswerQr : SessionUiState {
-        override val title = "Scan their reply"
-        override val subtitle = "Step 2 of 2 — scan the guest’s answer QR."
+    data object EnterOfferCode : SessionUiState {
+        override val title = "Enter share code"
+        override val subtitle = "Join the sharer. You won’t pick files — only download theirs."
     }
 
     data class Connecting(
@@ -57,7 +55,18 @@ sealed interface SessionUiState {
 
     data object ConnectedBrowsing : SessionUiState {
         override val title = "Connected"
-        override val subtitle = "Pick what to download from the shared tree."
+        override val subtitle = "Shared files will appear here for download."
+    }
+
+    /** Guest paired; waiting for host manifest (no local file picking). */
+    data object WaitingForSharedFiles : SessionUiState {
+        override val title = "Paired"
+        override val subtitle = "Waiting for the sharer’s files. You don’t choose what to send."
+    }
+
+    data object HostPaired : SessionUiState {
+        override val title = "Paired"
+        override val subtitle = "The other device joined. Ready to send your selected files."
     }
 
     data class Transferring(
@@ -92,7 +101,7 @@ sealed interface SessionUiState {
 }
 
 enum class ConnectStep {
-    QrExchanged,
+    CodeExchanged,
     Gathering,
     Checking,
     Connected

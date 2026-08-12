@@ -30,7 +30,7 @@ class ShareForegroundService : Service() {
                 startAsForeground(sending, progress, fileName)
             }
         }
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     private fun startAsForeground(sending: Boolean, progressPermille: Int, fileName: String?) {
