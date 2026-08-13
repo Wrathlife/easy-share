@@ -1,0 +1,16 @@
+## This file is gitignored. Copy keys here for local builds.
+## sdk.dir is usually written by Android Studio.
+
+# Unity Ads (Netshare Android)
+unity.ads.gameId=800275522
+unity.ads.interstitialPlacementId=Interstitial_Android
+unity.ads.bannerPlacementId=Banner_Android
+
+# Google Play Billing — create this one-time (non-consumable) product in Play Console
+billing.removeAdsProductId=remove_ads
+
+# Release upload signing (paths relative to repo root; never commit real passwords)
+# RELEASE_STORE_FILE=keystore/netshare-upload.jks
+# RELEASE_STORE_PASSWORD=
+# RELEASE_KEY_ALIAS=netshare
+# RELEASE_KEY_PASSWORD=

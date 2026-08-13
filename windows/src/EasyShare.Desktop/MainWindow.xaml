@@ -1,0 +1,254 @@
+﻿<Window x:Class="EasyShare.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Netshare"
+        Height="640" Width="440"
+        MinHeight="520" MinWidth="380"
+        WindowStartupLocation="CenterScreen"
+        Background="#F3EFE7"
+        FontFamily="Segoe UI"
+        FontSize="14"
+        Foreground="#1C1B1A">
+  <Window.Resources>
+    <!-- Android Theme.kt: Teal / Sand / Ink / Mist -->
+    <SolidColorBrush x:Key="TealBrush" Color="#1A6B6C"/>
+    <SolidColorBrush x:Key="TealDarkBrush" Color="#0F3D3E"/>
+    <SolidColorBrush x:Key="SandBrush" Color="#F3EFE7"/>
+    <SolidColorBrush x:Key="MistBrush" Color="#D7E4E4"/>
+    <SolidColorBrush x:Key="InkBrush" Color="#1C1B1A"/>
+    <SolidColorBrush x:Key="MutedBrush" Color="#5C5A57"/>
+    <SolidColorBrush x:Key="WarnBgBrush" Color="#E8DCC8"/>
+    <SolidColorBrush x:Key="CardBgBrush" Color="#E8E4DB"/>
+
+    <Style x:Key="PrimaryButton" TargetType="Button">
+      <Setter Property="Background" Value="{StaticResource TealBrush}"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Padding" Value="16,14"/>
+      <Setter Property="FontSize" Value="15"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" Background="{TemplateBinding Background}"
+                    CornerRadius="12" Padding="{TemplateBinding Padding}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="bd" Property="Opacity" Value="0.45"/>
+              </Trigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="#155556"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="OutlineButton" TargetType="Button">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{StaticResource TealDarkBrush}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource TealBrush}"/>
+      <Setter Property="BorderThickness" Value="1.5"/>
+      <Setter Property="Padding" Value="16,14"/>
+      <Setter Property="FontSize" Value="15"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="12" Padding="{TemplateBinding Padding}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="bd" Property="Opacity" Value="0.45"/>
+              </Trigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="#E4EEED"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource OutlineButton}">
+      <Setter Property="Padding" Value="12,8"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
+    <Style x:Key="SectionTitle" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="20"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
+      <Setter Property="Margin" Value="0,0,0,6"/>
+    </Style>
+
+    <Style x:Key="BodyMuted" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="LineHeight" Value="20"/>
+    </Style>
+
+    <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+  </Window.Resources>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="28,24">
+    <Grid>
+      <!-- HOME (matches Android HomeScreen) -->
+      <StackPanel x:Name="HomePanel" HorizontalAlignment="Stretch">
+        <TextBlock Text="Netshare"
+                   FontSize="36" FontWeight="Bold"
+                   Foreground="{StaticResource TealBrush}"
+                   HorizontalAlignment="Center"
+                   Margin="0,32,0,12"/>
+        <TextBlock Text="{Binding HomeSubtitle}"
+                   Style="{StaticResource BodyMuted}"
+                   TextAlignment="Center"
+                   Margin="8,0,8,28"/>
+
+        <!-- Encrypt card (Android EncryptTransferControls) -->
+        <Border Background="{StaticResource CardBgBrush}" CornerRadius="12" Padding="14,10" Margin="0,0,0,8">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center">
+              <TextBlock Text="Encrypt file transfer" FontWeight="SemiBold" FontSize="14"/>
+            </StackPanel>
+            <CheckBox x:Name="EncryptToggle" Grid.Column="1"
+                      IsChecked="{Binding EncryptEnabled, Mode=TwoWay}"
+                      VerticalAlignment="Center"
+                      Margin="12,0,0,0"/>
+          </Grid>
+        </Border>
+        <Border Background="{StaticResource WarnBgBrush}" CornerRadius="12" Padding="14"
+                Margin="0,0,0,20"
+                Visibility="{Binding EncryptEnabled, Converter={StaticResource BoolToVis}}">
+          <TextBlock Style="{StaticResource BodyMuted}" Foreground="{StaticResource TealDarkBrush}"
+                     Text="(Warning! Slow transfer) File bytes go through an encrypted relay instead of a direct connection."/>
+        </Border>
+
+        <Button Content="Share files" Style="{StaticResource PrimaryButton}"
+                Margin="0,8,0,12" Click="OnShareClick"/>
+        <Button Content="Receive files" Style="{StaticResource OutlineButton}"
+                Click="OnReceiveClick"/>
+
+        <TextBlock Text="{Binding Status}" Style="{StaticResource BodyMuted}"
+                   Margin="0,28,0,0" TextAlignment="Center"/>
+      </StackPanel>
+
+      <!-- SHARE -->
+      <StackPanel x:Name="SharePanel" Visibility="Collapsed">
+        <Button Content="← Back" Style="{StaticResource BackButton}" Click="OnBackHome" Margin="0,0,0,16"/>
+        <TextBlock Text="Choose files to share" Style="{StaticResource SectionTitle}"/>
+        <TextBlock Text="Only you pick what to send. The other device just receives."
+                   Style="{StaticResource BodyMuted}" Margin="0,0,0,16"/>
+
+        <Button Content="Pick files…" Style="{StaticResource OutlineButton}"
+                Margin="0,0,0,12" Click="OnPickFiles"/>
+        <TextBlock Text="{Binding FilesSummary}" Style="{StaticResource BodyMuted}" Margin="0,0,0,12"/>
+        <Button Content="Start sharing" Style="{StaticResource PrimaryButton}"
+                Margin="0,0,0,20" Click="OnStartShare"/>
+
+        <!-- Code card -->
+        <Border Background="{StaticResource MistBrush}" CornerRadius="16" Padding="20,24"
+                Margin="0,0,0,16"
+                Visibility="{Binding ShowCodeCard, Converter={StaticResource BoolToVis}}">
+          <StackPanel HorizontalAlignment="Center">
+            <TextBlock Text="SHARE CODE" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{StaticResource TealDarkBrush}" Opacity="0.7"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding CodeDisplay}"
+                       FontSize="32" FontWeight="Bold" FontFamily="Consolas"
+                       Foreground="{StaticResource TealDarkBrush}"
+                       HorizontalAlignment="Center" Margin="0,10,0,8"/>
+            <TextBlock Text="Send this code to the other device. They enter it to pair."
+                       Style="{StaticResource BodyMuted}" TextAlignment="Center"
+                       Foreground="{StaticResource TealDarkBrush}"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Confirm card (Android PairingConfirmCard) -->
+        <StackPanel Visibility="{Binding ShowConfirmCard, Converter={StaticResource BoolToVis}}" Margin="0,0,0,16">
+          <TextBlock Text="Confirm these are the right devices" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,8"/>
+          <TextBlock Text="Both screens should show the same two words. Read them aloud, then confirm."
+                     Style="{StaticResource BodyMuted}" Margin="0,0,0,16"/>
+          <Border Background="{StaticResource MistBrush}" CornerRadius="16" Padding="20,28" Margin="0,0,0,12">
+            <StackPanel HorizontalAlignment="Center">
+              <TextBlock Text="MATCH WORDS" FontSize="12" FontWeight="SemiBold"
+                         Foreground="{StaticResource TealDarkBrush}" Opacity="0.7"
+                         HorizontalAlignment="Center"/>
+              <TextBlock Text="{Binding Phrase}" FontSize="28" FontWeight="Bold"
+                         Foreground="{StaticResource TealDarkBrush}"
+                         HorizontalAlignment="Center" Margin="0,12,0,0"
+                         TextAlignment="Center"/>
+            </StackPanel>
+          </Border>
+          <TextBlock Text="{Binding ConfirmHint}" Style="{StaticResource BodyMuted}" Margin="0,0,0,16"/>
+          <Button Content="{Binding ConfirmButtonText}" Style="{StaticResource PrimaryButton}"
+                  IsEnabled="{Binding CanConfirm}" Click="OnConfirm" Margin="0,0,0,8"/>
+          <Button Content="No — cancel pairing" Style="{StaticResource OutlineButton}" Click="OnReject"/>
+        </StackPanel>
+
+        <ProgressBar Height="8" Value="{Binding ProgressValue}" Maximum="100"
+                     Foreground="{StaticResource TealBrush}" Background="#E0DBD2"
+                     BorderThickness="0" Margin="0,8,0,8"/>
+        <TextBlock Text="{Binding ProgressText}" Style="{StaticResource BodyMuted}"/>
+        <TextBlock Text="{Binding Status}" Style="{StaticResource BodyMuted}" Margin="0,12,0,0"/>
+      </StackPanel>
+
+      <!-- RECEIVE -->
+      <StackPanel x:Name="ReceivePanel" Visibility="Collapsed">
+        <Button Content="← Back" Style="{StaticResource BackButton}" Click="OnBackHome" Margin="0,0,0,16"/>
+        <TextBlock Text="Receive files" Style="{StaticResource SectionTitle}"/>
+        <TextBlock Text="Join the sharer. You won’t pick files — only download theirs."
+                   Style="{StaticResource BodyMuted}" Margin="0,0,0,16"/>
+
+        <TextBlock Text="Share code" FontWeight="SemiBold" Margin="0,0,0,6"/>
+        <TextBox x:Name="ReceiveCodeBox" Height="44" FontSize="20" FontFamily="Consolas"
+                 Padding="12,8" Margin="0,0,0,16"
+                 BorderBrush="{StaticResource TealBrush}" BorderThickness="1.5"
+                 Background="White" VerticalContentAlignment="Center"/>
+        <Button Content="Connect" Style="{StaticResource PrimaryButton}"
+                Margin="0,0,0,20" Click="OnStartReceive"/>
+
+        <StackPanel Visibility="{Binding ShowConfirmCard, Converter={StaticResource BoolToVis}}" Margin="0,0,0,16">
+          <TextBlock Text="Confirm these are the right devices" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,8"/>
+          <TextBlock Text="Both screens should show the same two words. Read them aloud, then confirm."
+                     Style="{StaticResource BodyMuted}" Margin="0,0,0,16"/>
+          <Border Background="{StaticResource MistBrush}" CornerRadius="16" Padding="20,28" Margin="0,0,0,12">
+            <StackPanel HorizontalAlignment="Center">
+              <TextBlock Text="MATCH WORDS" FontSize="12" FontWeight="SemiBold"
+                         Foreground="{StaticResource TealDarkBrush}" Opacity="0.7"
+                         HorizontalAlignment="Center"/>
+              <TextBlock Text="{Binding Phrase}" FontSize="28" FontWeight="Bold"
+                         Foreground="{StaticResource TealDarkBrush}"
+                         HorizontalAlignment="Center" Margin="0,12,0,0"
+                         TextAlignment="Center"/>
+            </StackPanel>
+          </Border>
+          <TextBlock Text="{Binding ConfirmHint}" Style="{StaticResource BodyMuted}" Margin="0,0,0,16"/>
+          <Button Content="{Binding ConfirmButtonText}" Style="{StaticResource PrimaryButton}"
+                  IsEnabled="{Binding CanConfirm}" Click="OnConfirm" Margin="0,0,0,8"/>
+          <Button Content="No — cancel pairing" Style="{StaticResource OutlineButton}" Click="OnReject"/>
+        </StackPanel>
+
+        <ProgressBar Height="8" Value="{Binding ProgressValue}" Maximum="100"
+                     Foreground="{StaticResource TealBrush}" Background="#E0DBD2"
+                     BorderThickness="0" Margin="0,8,0,8"/>
+        <TextBlock Text="{Binding ProgressText}" Style="{StaticResource BodyMuted}"/>
+        <TextBlock Text="{Binding Status}" Style="{StaticResource BodyMuted}" Margin="0,12,0,0"/>
+      </StackPanel>
+    </Grid>
+  </ScrollViewer>
+</Window>

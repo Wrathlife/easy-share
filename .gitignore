@@ -15,5 +15,6 @@ app/build/
 *.dex
 *.keystore
 *.jks
+keystore/
 debug-*.png
 tmp-*.txt

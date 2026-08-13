@@ -1,0 +1,10 @@
+﻿# Build / IDE noise — keep Cursor from indexing merge intermediates (values.xml spam, etc.)
+.gradle/
+app/build/
+/build/
+.kotlin/
+*.apk
+*.aab
+captures/
+.externalNativeBuild/
+.cxx/
